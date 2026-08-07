@@ -1,0 +1,25 @@
+{
+  "name": "paamc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SoloMemo09/MVP_PAAMC.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SoloMemo09/MVP_PAAMC/issues"
+  },
+  "homepage": "https://github.com/SoloMemo09/MVP_PAAMC#readme",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.112.2",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  }
+}

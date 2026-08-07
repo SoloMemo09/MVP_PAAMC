@@ -88,8 +88,7 @@ def imprimir_resultados(lista):
         ip = resultados["ip"]
         mac = resultados["mac"]
         fabricante = resultados["fabricante"]
-        
-       
+
         equipo_actual = {
             "ip": ip,
             "mac": mac,
