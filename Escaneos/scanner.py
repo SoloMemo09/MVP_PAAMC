@@ -6,6 +6,11 @@ import sys
 import concurrent.futures
 import json
 import logging 
+import os 
+
+
+from dotenv import load_dotenv
+load_dotenv()  # Carga las variables de entorno desde el archivo .env
 
 
 logging.basicConfig(
@@ -127,11 +132,29 @@ if __name__ == "__main__":
     
     if len(resultados_red) > 0:
         logging.info("Iniciando escaneo concurrente de puertos...")
-        imprimir_resultados(resultados_red)
+        resultados_devueltos = imprimir_resultados(resultados_red)
+        
         logging.info("Proceso finalizado exitosamente. JSON generado.")
+
+        url = "http://localhost:3000/scan"
+
+        cabeceras = {
+            "x-api-key": os.getenv("API_KEY"),
+            "Content-Type": "application/json"
+            }
+
+        datos = {
+            "cidr": rango_dir,
+            "resultados": resultados_devueltos
+            }
+
+        respuesta = requests.post(url, json=datos, headers=cabeceras)
+
+        if respuesta.status_code in [200, 201]:
+            logging.info("DATOS ENVIADOS A LA API Y GUARDADOS EN SUPABASE CON ÉXITO.")
+        else:
+            logging.error(f"ERROR AL ENVIAR A LA API. CÓDIGO: {respuesta.status_code}")
     else:
         logging.warning("No se encontraron dispositivos en la red para escanear.")
-    
-    
 
 
