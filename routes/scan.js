@@ -54,7 +54,7 @@ router.post('/', apiKeyMiddleware, async (req, res) => {
              if (portError) console.error("Error al guardar puerto:", portError);
           }
         } 
-        
+
       } 
   }
 
@@ -67,6 +67,24 @@ router.post('/', apiKeyMiddleware, async (req, res) => {
 
   } catch (error) {
     console.error("Error en servidor:", error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+router.get('/latest', async (req, res) => {
+  try {
+    const { data: scan, error } = await supabase
+      .from('scans')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error) throw error;
+
+    res.status(200).json(scan);
+  } catch (err) {
+    console.error('Error al obtener el último escaneo:', err);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });

@@ -13,6 +13,10 @@ const scansRoutes = require('./routes/scan');
 // Le decimos a Express: todas las peticiones que empiecen con /scans, úsalas con scansRoutes
 app.use('/scan', scansRoutes);
 
+const assetsRoutes = require('./routes/assets');
+
+app.use('/assets', assetsRoutes);
+
 app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
