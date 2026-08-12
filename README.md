@@ -1,4 +1,6 @@
-# HOLAAA 👋 PAAMC (Network Scanner Dashboard)
+# PAAMC (Network Scanner Dashboard)
+
+👋 Holaaa
 
 PAAMC es un sistema integral para el descubrimiento de dispositivos en redes locales y el escaneo de puertos, que presenta la información recopilada en un moderno panel de control web. El proyecto está dividido en tres componentes principales: un motor de escaneo en Python, una API RESTful en Node.js, y un Frontend desarrollado con Astro.
 
