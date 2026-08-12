@@ -16,7 +16,8 @@ load_dotenv()  # Carga las variables de entorno desde el archivo .env
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
+    datefmt="%Y-%m-%d %H:%M:%S",
+    stream=sys.stdout
 )
 
 if len(sys.argv) < 2:

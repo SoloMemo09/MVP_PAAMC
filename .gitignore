@@ -3,7 +3,20 @@ venv/
 Escaneos/venv/
 .venv/
 node_modules/
+dashboard/node_modules/
 
 # Archivos temporales de Python
 __pycache__/
-*.pyc}
+*.pyc
+Escaneos/__pycache__/
+
+# Archivos sensibles (API Keys y Variables de entorno)
+.env
+Escaneos/.env
+dashboard/.env
+dashboard/.env.production
+
+# Referencias e instrucciones del agente
+Referencias/
+SKILL.md
+.agents/

@@ -1,0 +1,101 @@
+---
+export interface Props {
+  assets: any[];
+}
+
+const { assets } = Astro.props;
+
+// Pass the data to the client-side script
+const assetsJson = JSON.stringify(assets);
+---
+
+<div id="network-graph" class="w-full h-full bg-[#0f0e13]" data-assets={assetsJson}></div>
+
+<script>
+  import { Network } from 'vis-network';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('network-graph');
+    if (!container) return;
+    
+    try {
+      const assets = JSON.parse(container.dataset.assets || '[]');
+      
+      // Create nodes and edges
+      // The scanner itself or the network gateway is the center node
+      const nodes = [
+        { 
+          id: 'scanner', 
+          label: 'Scanner / Gateway', 
+          color: { background: '#9f7aea', border: '#805ad5' },
+          font: { color: '#ffffff' },
+          shape: 'hexagon',
+          size: 30
+        }
+      ];
+      
+      const edges = [];
+      
+      assets.forEach((asset, index) => {
+        nodes.push({
+          id: asset.id,
+          label: asset.ip_address + '\n' + (asset.vendor && asset.vendor !== 'Desconocido' ? asset.vendor : ''),
+          color: { background: '#1a1924', border: '#4c1d95', hover: { background: '#2d2c3c' } },
+          font: { color: '#e2e8f0', size: 12 },
+          shape: 'box',
+          margin: 10,
+          borderWidth: 1,
+          shadow: { enabled: true, color: 'rgba(0,0,0,0.5)', size: 10 }
+        });
+        
+        edges.push({
+          from: 'scanner',
+          to: asset.id,
+          color: { color: '#4a5568', opacity: 0.5 },
+          width: 1,
+          smooth: { type: 'continuous' }
+        });
+      });
+
+      const data = { nodes, edges };
+      const options = {
+        interaction: {
+          hover: true,
+          tooltipDelay: 200,
+        },
+        physics: {
+          solver: 'forceAtlas2Based',
+          forceAtlas2Based: {
+            gravitationalConstant: -50,
+            centralGravity: 0.01,
+            springLength: 200,
+            springConstant: 0.08
+          },
+          stabilization: { iterations: 150 }
+        }
+      };
+
+      const network = new Network(container, data, options);
+      
+      // Double click to view details
+      network.on("doubleClick", function (params) {
+        if (params.nodes.length > 0) {
+          const nodeId = params.nodes[0];
+          if (nodeId !== 'scanner') {
+            window.location.href = `/asset/${nodeId}`;
+          }
+        }
+      });
+      
+    } catch (err) {
+      console.error("Error rendering network graph:", err);
+    }
+  });
+</script>
+
+<style>
+  /* Ensure the vis-network tooltip doesn't get cut off */
+  .vis-network:focus {
+    outline: none;
+  }
+</style>
